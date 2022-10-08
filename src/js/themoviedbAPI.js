@@ -6,9 +6,22 @@ class TMDB {
         this.genders = [];
     }
     async getTrendings(page = 1){
+        try{
+            await this.getGenres();
+            const response = await fetch(`https://api.themoviedb.org/3/trending/movie/day?api_key=${this.apiKey}&page=${page}`);
+            if(response.ok){
+                const data = await response.json();
+                return this.transfomResult(data);
+            }
+        }
+        catch(err){
+            console.log(err);
+        }
+    }
+    async getMoviByKeyword(query){
         await this.getGenres();
         try{
-            const response = await fetch(`https://api.themoviedb.org/3/trending/movie/day?api_key=${this.apiKey}&page=${page}`);
+            const response = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${this.apiKey}&query=${query}`);
             if(response.ok){
                 const data = await response.json();
                 return this.transfomResult(data);
@@ -60,7 +73,7 @@ class TMDB {
         }
     }
     transfomResult(data){
-        if(Array.isArray(data)){
+        if(Array.isArray(data.results)){
             data.results = data.results.map(item => {
                 item.poster_path = this.imageURL + item.poster_path;
                 item.backdrop_path = this.imageURL + item.backdrop_path;
@@ -105,6 +118,9 @@ class TMDB {
         }
     }
     transfomGenders(arr = []){
+        if(this.genders.length < 1){
+            return arr;
+        }
         arr = arr.map((id) => this.genders.find(item => item.id === id).name);
         return arr;
     }

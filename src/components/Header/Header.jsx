@@ -1,17 +1,18 @@
-import { NavLink, useLocation } from "react-router-dom"
+import { useLocation } from "react-router-dom"
+import { StyledLink, SyledHeader } from "./HeaderStyled";
 
 export const Header = () => {
     const location = useLocation();
-    return <header>
+    return <SyledHeader>
         <nav>
             <ul>
                 <li>
-                    <NavLink to="/">Home</NavLink>
+                    <StyledLink to="/" end>Home</StyledLink>
                 </li>
                 <li>
-                    <NavLink to="movies" state={{from: location}}>Movies</NavLink>
+                    <StyledLink to="movies" state={{from: location}}>Movies</StyledLink>
                 </li>
             </ul>
         </nav>
-    </header>
+    </SyledHeader>
 }

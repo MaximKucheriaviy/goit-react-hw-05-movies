@@ -3,8 +3,7 @@ import styles from './styles.module.scss';
 
 export const FinmInfo = ({movieInfo, backLocation}) => {
     const {title, popularity, overview, poster_path, genres} = movieInfo;
-    console.log(backLocation);
-    return <main>
+    return <>
             <div className={styles.filminfo}>
                 <div className={styles.thumb}>
                     <img src={poster_path} alt="title"/>
@@ -20,7 +19,7 @@ export const FinmInfo = ({movieInfo, backLocation}) => {
                     </p>
                 </div>
             </div>
-            <div>
+            <div className={styles.addInfo}>
                 <p>Aditional information</p>
                 <ul>
                     <li>
@@ -31,5 +30,5 @@ export const FinmInfo = ({movieInfo, backLocation}) => {
                     </li>
                 </ul>
             </div>
-        </main>
+        </>
 }

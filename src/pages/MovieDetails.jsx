@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
-import { useParams, NavLink, useLocation, Outlet } from "react-router-dom";
+import { useState, useEffect, Suspense } from "react";
+import { useParams, useLocation, Outlet } from "react-router-dom";
 import { FinmInfo } from "components/FilmInfo/FilmInfo";
+import { StyledLink } from "./MovieDetailsStyled.jsx";
 
-export const MovieDetails = ({api}) => {
+const MovieDetails = ({api, setIsLoading}) => {
     const location = useLocation();
-    console.log(location);
     const {movieId} = useParams();
     const [movieInfo, setMovieInfo] = useState({});
     useEffect(() => {
@@ -15,11 +15,15 @@ export const MovieDetails = ({api}) => {
         .catch(err => {
             console.log(err);
         })
-    }, [movieId, api]);
+    }, [movieId, api, setIsLoading]);
 
     return <main>
-        <NavLink to={location.state ? location.state.from : "/"}>go back</NavLink>
+        <StyledLink to={location.state ? location.state.from : "/"}>go back</StyledLink>
         {movieInfo.title && <FinmInfo movieInfo={movieInfo} backLocation={location.state ?? "/"}/>}
-        <Outlet/>
+        <Suspense>
+            <Outlet/>
+        </Suspense>
     </main>
 }
+
+export default MovieDetails;

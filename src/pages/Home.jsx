@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { FilmList } from "components/FilmList/FilmList";
 
-export const Home = ({api}) => {
+const Home = ({api, setIsLoading}) => {
     const [trendings, setTrendings] = useState([]);
-    const location = useLocation();
     useEffect(() => {
         api.getTrendings()
         .then(data => {
@@ -12,15 +11,15 @@ export const Home = ({api}) => {
         })
         .catch(err => {
             console.log(err);
-        });
-    }, [api]);
+        })
+    }, [api, setIsLoading]);
 
     return <main>
         <h1>Trendings today</h1>
         {trendings.length > 0 && 
-            <ul>
-                {trendings.map(({title, id}) => <li key={id}><NavLink to={`movies/${id}`} state={{from: location.pathname}}>{title}</NavLink></li>)}
-            </ul>
+            <FilmList list={trendings} path={'movies/'}/>
         }
     </main>
 }
+
+export default Home;
