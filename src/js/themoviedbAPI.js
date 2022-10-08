@@ -1,3 +1,5 @@
+import logo from "logo192.png";
+
 class TMDB {
     constructor(key){
         this.apiKey = key;
@@ -126,6 +128,10 @@ class TMDB {
     }
     transfromCasts(arr = []){
         arr = arr.map(item => {
+            if(!item.profile_path){
+                item.profile_path = logo;
+                return item;
+            }
             item.profile_path = this.imageURL + item.profile_path;
             return item
         });
