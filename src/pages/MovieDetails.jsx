@@ -1,12 +1,25 @@
-// import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import TMDB from "js/themoviedbAPI"
+import { useState, useEffect } from "react";
+import { useParams, NavLink, useLocation, Outlet } from "react-router-dom";
+import { FinmInfo } from "components/FilmInfo/FilmInfo";
 
-// const api = new TMDB("1cdff00a9c2b2133227357e455cd1931");
-
-export const MovieDetails = () => {
+export const MovieDetails = ({api}) => {
+    const location = useLocation();
+    console.log(location);
     const {movieId} = useParams();
+    const [movieInfo, setMovieInfo] = useState({});
+    useEffect(() => {
+        api.getMoviInfo(movieId)
+        .then(data => {
+            setMovieInfo(data);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    }, [movieId, api]);
+
     return <main>
-        <h1>{movieId}</h1>
+        <NavLink to={location.state ? location.state.from : "/"}>go back</NavLink>
+        {movieInfo.title && <FinmInfo movieInfo={movieInfo} backLocation={location.state ?? "/"}/>}
+        <Outlet/>
     </main>
 }

@@ -18,13 +18,61 @@ class TMDB {
             console.log(err);
         }
     }
+    async getMoviInfo(id){
+        await this.getGenres();
+        try{
+            const response = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${this.apiKey}`);
+            if(response.ok){
+                const data = await response.json();
+                return this.transfomResult(data);
+            }
+        }
+        catch(err){
+            console.log(err);
+        }
+    }
+    async getMoviCredits(id){
+        await this.getGenres();
+        try{
+            const response = await fetch(`https://api.themoviedb.org/3/movie/${id}/credits?api_key=${this.apiKey}`);
+            if(response.ok){
+                const data = await response.json();
+                data.cast = this.transfromCasts(data.cast);
+                return data;
+            }
+        }
+        catch(err){
+            console.log(err);
+        }
+    }
+    async getMoviReviews(id){
+        await this.getGenres();
+        try{
+            const response = await fetch(`https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${this.apiKey}`);
+            if(response.ok){
+                const data = await response.json();
+                // data.cast = this.transfromCasts(data.cast);
+                return data;
+            }
+        }
+        catch(err){
+            console.log(err);
+        }
+    }
     transfomResult(data){
-        data.results = data.results.map(item => {
-            item.poster_path = this.imageURL + item.poster_path;
-            item.backdrop_path = this.imageURL + item.backdrop_path;
-            item.genre_ids = this.transfomGenders(item.genre_ids);
-            return item;
-        })
+        if(Array.isArray(data)){
+            data.results = data.results.map(item => {
+                item.poster_path = this.imageURL + item.poster_path;
+                item.backdrop_path = this.imageURL + item.backdrop_path;
+                item.genre_ids = this.transfomGenders(item.genre_ids);
+                return item;
+            })
+        }
+        else{
+            data.poster_path = this.imageURL + data.poster_path;
+            data.backdrop_path = this.imageURL + data.backdrop_path;
+            data.genre_ids = this.transfomGenders(data.genre_ids);
+        }
         return data;
     }
     async getGenres(){
@@ -54,12 +102,18 @@ class TMDB {
                 console.error("Error in getGenres")
                 console.log(err);
             }
-            //console.log(this.genders);
         }
     }
     transfomGenders(arr = []){
         arr = arr.map((id) => this.genders.find(item => item.id === id).name);
         return arr;
+    }
+    transfromCasts(arr = []){
+        arr = arr.map(item => {
+            item.profile_path = this.imageURL + item.profile_path;
+            return item
+        });
+        return arr
     }
 }
 

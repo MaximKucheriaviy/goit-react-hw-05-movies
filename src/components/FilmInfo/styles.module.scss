@@ -1,0 +1,15 @@
+.filminfo{
+    display: flex;
+    gap: 10px;
+    & .thumb{
+        flex-shrink: 0;
+        width: 250px;
+    }
+    & .genres{
+        display: flex;
+        gap: 10px;
+    }
+    & .subtitle{
+        font-weight: 700;
+    }
+}
