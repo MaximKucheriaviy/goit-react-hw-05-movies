@@ -27,6 +27,7 @@ export const App = () => {
             <Route path="reviews" element={<Reviews api={api}/>}/>
           </Route>
           <Route exact path="/goit-react-hw-05-movies" element={<Navigate to="/" />}/>
+          <Route exact path="/goit-react-hw-05-movies/" element={<Navigate to="/" />}/>
         </Routes>
       </Suspense>
       {isLoading && <Loader/>}
