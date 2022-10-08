@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import { useState, lazy, Suspense } from "react";
 import { Header } from "./Header/Header";
 import { Loader } from "./Loader/Loader";
@@ -26,6 +26,7 @@ export const App = () => {
             <Route path="cast" element={<Cast api={api}/>}/>
             <Route path="reviews" element={<Reviews api={api}/>}/>
           </Route>
+          <Route exact path="/goit-react-hw-05-movies" element={<Navigate to="/" />}/>
         </Routes>
       </Suspense>
       {isLoading && <Loader/>}
