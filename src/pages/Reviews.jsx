@@ -1,11 +1,13 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Review } from "components/Review/Review";
+import { api } from "servises/themoviedbAPI";
 
-const Reviews = ({api}) => {
+const Reviews = ({isLoading}) => {
     const {movieId} = useParams();
     const [reviews, setReviews] = useState([]);
     useEffect(() => {
+        isLoading(true);
         api.getMoviReviews(movieId)
         .then(data => {
             if(!data.results.length){
@@ -16,7 +18,10 @@ const Reviews = ({api}) => {
         .catch(err => {
             console.log(err);
         })
-    }, [movieId, api]);
+        .finally(() =>{
+            isLoading(false);
+        })
+    }, [movieId, isLoading]);
     
     return <>
         {reviews.length > 0 ? 

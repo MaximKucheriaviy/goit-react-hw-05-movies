@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { FilmList } from "components/FilmList/FilmList";
-
-const Home = ({api, setIsLoading}) => {
+import { api } from "servises/themoviedbAPI";
+const Home = ({isLoading}) => {
     const [trendings, setTrendings] = useState([]);
     useEffect(() => {
+        isLoading(true);
         api.getTrendings()
         .then(data => {
             // console.log(data.results);
@@ -12,7 +13,10 @@ const Home = ({api, setIsLoading}) => {
         .catch(err => {
             console.log(err);
         })
-    }, [api, setIsLoading]);
+        .finally(() =>{
+            isLoading(false);
+        })
+    }, [isLoading]);
 
     return <main>
         <h1>Trendings today</h1>

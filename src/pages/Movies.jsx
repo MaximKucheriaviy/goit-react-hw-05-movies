@@ -2,10 +2,10 @@ import { SearchForm } from "components/SearchFrom/SearchFrom"
 import { useSearchParams } from "react-router-dom"
 import { useEffect, useState } from "react";
 import { FilmList } from "components/FilmList/FilmList";
+import { api } from "servises/themoviedbAPI";
 
 
-
-const Movies = ({api, setIsLoading}) => {
+const Movies = ({isLoading}) => {
     const [searchParams, setSearchParams] = useSearchParams();
     const keyword = searchParams.get('keyword');
     const [films, setFilms] = useState([]);
@@ -13,7 +13,7 @@ const Movies = ({api, setIsLoading}) => {
         if(!keyword){
             return;
         }
-        setIsLoading(true);
+        isLoading(true);
         api.getMoviByKeyword(keyword)
         .then(data => {
             if(data.results.length === 0){
@@ -25,9 +25,9 @@ const Movies = ({api, setIsLoading}) => {
             console.log(err);
         })
         .finally(() => {
-            setIsLoading(false)
+            isLoading(false);
         })
-    }, [keyword, api, setIsLoading])
+    }, [keyword, isLoading])
     return<main>
         <SearchForm onSubmit={setSearchParams}/>
         {films.length > 0 && 

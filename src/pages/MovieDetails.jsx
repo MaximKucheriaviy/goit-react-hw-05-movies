@@ -2,12 +2,14 @@ import { useState, useEffect, Suspense } from "react";
 import { useParams, useLocation, Outlet } from "react-router-dom";
 import { FinmInfo } from "components/FilmInfo/FilmInfo";
 import { StyledLink } from "./MovieDetailsStyled.jsx";
+import { api } from "servises/themoviedbAPI";
 
-const MovieDetails = ({api, setIsLoading}) => {
+const MovieDetails = ({isLoading}) => {
     const location = useLocation();
     const {movieId} = useParams();
     const [movieInfo, setMovieInfo] = useState({});
     useEffect(() => {
+        isLoading(true);
         api.getMoviInfo(movieId)
         .then(data => {
             setMovieInfo(data);
@@ -15,7 +17,10 @@ const MovieDetails = ({api, setIsLoading}) => {
         .catch(err => {
             console.log(err);
         })
-    }, [movieId, api, setIsLoading]);
+        .finally(() => {
+            isLoading(false);
+        })
+    }, [movieId, isLoading]);
 
     return <main>
         <StyledLink to={location.state ? location.state.from : "/"}>go back</StyledLink>

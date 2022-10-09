@@ -1,7 +1,7 @@
 import logo from "logo192.png";
 
 class TMDB {
-    constructor(key){
+    constructor(key = "1cdff00a9c2b2133227357e455cd1931"){
         this.apiKey = key;
         this.imageURL = "https://image.tmdb.org/t/p/w500";
         this.genreNeaded = true;
@@ -140,3 +140,4 @@ class TMDB {
 }
 
 export default TMDB;
+export const api = new TMDB();
