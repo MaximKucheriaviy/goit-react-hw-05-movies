@@ -3,6 +3,7 @@ import { useParams, useLocation, Outlet } from "react-router-dom";
 import { FinmInfo } from "components/FilmInfo/FilmInfo";
 import { StyledLink } from "./MovieDetailsStyled.jsx";
 import { api } from "servises/themoviedbAPI";
+import { Loader } from "components/Loader/Loader.jsx";
 
 const MovieDetails = ({isLoading}) => {
     const location = useLocation();
@@ -25,7 +26,7 @@ const MovieDetails = ({isLoading}) => {
     return <main>
         <StyledLink to={location.state ? location.state.from : "/"}>go back</StyledLink>
         {movieInfo.title && <FinmInfo movieInfo={movieInfo} backLocation={location.state ?? "/"}/>}
-        <Suspense>
+        <Suspense fallback={<Loader/>}>
             <Outlet/>
         </Suspense>
     </main>
